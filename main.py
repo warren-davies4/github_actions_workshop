@@ -42,3 +42,6 @@ def example_bad_add(num_1: int | float, num_2: int | float) -> int | float:
 
 def aadfsswdegfrg():
     pass
+
+def oirwgjorg()
+    pass
