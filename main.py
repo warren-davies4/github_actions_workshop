@@ -39,3 +39,6 @@ def example_bad_add(num_1: int | float, num_2: int | float) -> int | float:
         Sum of num_1 and num_2... and + 1
     """
     return num_1 + num_2 + 1
+
+def aadfsswdegfrg():
+    pass
