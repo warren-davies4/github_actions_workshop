@@ -1,0 +1,28 @@
+name: create a pull request for a release branch
+
+on:
+    workflow_dispatch:
+    push:
+        branches:
+            - release/*
+
+jobs:
+    create_pr:
+        runs-on: ubuntu-latest
+        steps:
+            # check out the repo
+            - name: checkout the repo
+              uses: actions/checkout@v3
+              with:
+                fetch-depth: 0
+            # create a pull request (if one already doesn't exist)
+            - name: create pull request
+              run: |
+                pr_list=$(gh pr list --base "$GITHUB_BASE_REF" --json number --jq '.[] | .number')
+                if [ -n "$pr_list" ]; then
+                    echo "Pull request for branch $GITHUB_BASE_REF already exists."
+                else
+                    gh pr create --fill --draft --base live
+                fi
+              env:
+                GITHUB_TOKEN: ${{ github.token }}
