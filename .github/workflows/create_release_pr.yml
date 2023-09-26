@@ -1,0 +1,26 @@
+name: create a pull request for a release branch
+
+on:
+    workflow_dispatch:
+    push:
+        branches:
+            - release/*
+
+jobs:
+    create_pr:
+        runs-on: ubuntu-latest
+        steps:
+            # check out the repo
+            - name: checkout the repo
+              uses: actions/checkout@v3
+              with:
+                fetch-depth: 0
+            # create a pull request (if one already doesn't exist)
+            - name: create pull request
+              run: |
+                gh pr create --fill --draft --base live
+              env:
+                GITHUB_TOKEN: ${{ github.token }}
+
+
+                

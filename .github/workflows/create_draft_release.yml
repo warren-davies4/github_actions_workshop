@@ -1,0 +1,24 @@
+name: create a draft release
+
+on: 
+    pull_request:
+        types:
+            - closed
+
+jobs:
+    release-if-merged:
+        runs-on: ubuntu-latest
+        if: |
+            github.event.pull_request.merged == true &&
+            startsWith(github.head_ref, 'release/') &&
+            endsWith(github.base_ref, 'live')
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+            - name: get the release name from the PR branch name and create a release
+              run: |
+                RELEASE_NAME=${HEAD_REF//release\//}
+                gh release create -d $RELEASE_NAME -t $RELEASE_NAME --target live
+              env: 
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
+                HEAD_REF: ${{ github.head_ref }}
